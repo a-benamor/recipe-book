@@ -1,5 +1,95 @@
-<p>
-  recipe-edit works!
-</p>
+<div class="row">
+  <div class="col-xs-12">
+    <form [formGroup]="recipeForm" (ngSubmit)="onSubmitRecipe()">
+      <div class="row">
+        <div class="col-xs-12">
+          <button type="submit"
+                  [disabled]="!recipeForm.valid"
+                  class="btn btn-success">Save</button>
+          <button type="button"
+                  (click)="onCancel()"
+                  class="btn btn-danger">Cancel</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text"
+                   id="name"
+                   formControlName="recipe-name"
+                   class="form-control">
+            <span *ngIf="recipeForm.get('recipe-name').touched && !recipeForm.get('recipe-name').valid"
+              class="help-block">the recipe name is required</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="image-url">Image URL</label>
+            <input type="text"
+                   id="image-url"
+                   formControlName="image-url"
+                   class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <img *ngIf="recipeForm.get('image-url').value != null"
+               width="200px" height="200px"
+            [src]="recipeForm.get('image-url')?.value" class="img-responsive" #imageContent>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea type="text"
+                   id="description"
+                      formControlName="description"
+                      rows="6"
+                      class="form-control">
+            </textarea>
+            <span *ngIf="recipeForm.get('description').touched && !recipeForm.get('description').valid"
+              class="help-block">the recipe description is required</span>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 10px">
+        <div formArrayName="recipe-ingredients"
+             class="col-xs-12">
+          <div *ngFor="let ingredientControl of getControls(); let i = index"
+               [formGroupName]="i"
+               class="row">
+            <div class="col-xs-8">
+              <input type="text"
+                     formControlName="name"
+                     class="form-control">
+            </div>
+            <div class="col-xs-2">
+              <input type="number"
+                     formControlName="amount"
+                     class="form-control">
+            </div>
+            <div class="col-xs-2">
+              <button type="button"
+                      (click)="onDeleteIngredient(i)"
+                      class="btn btn-danger">X</button>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-xs-12">
+              <button class="btn btn-success" type="button"
+              (click)="onAddIngredient()">Add ingredient</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
 
