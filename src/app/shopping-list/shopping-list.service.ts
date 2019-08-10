@@ -8,6 +8,7 @@ import {Subject, Subscription} from 'rxjs';
 export class ShoppingListService {
   // ingredientChanged = new EventEmitter<Ingredient[]>();
   ingredientChanged = new Subject<Ingredient[]>();
+  startedEditing = new Subject<number>();
   private ingredients: Ingredient[] = [];
 
   constructor() { }
@@ -26,6 +27,19 @@ export class ShoppingListService {
   addListOfIngredients(ingredients: Ingredient[]) {
     this.ingredients.push(... ingredients);
     // this.ingredientChanged.emit(this.ingredients.slice());
+    this.ingredientChanged.next(this.ingredients.slice());
+  }
+
+  getIngredient(index: number) {
+    return this.ingredients[index];
+  }
+  updateIngredient(index, newIngredient) {
+    this.ingredients[index] = newIngredient;
+    this.ingredientChanged.next(this.ingredients.slice());
+  }
+
+  deleteIngredient(index: number) {
+    this.ingredients.splice(index, 1);
     this.ingredientChanged.next(this.ingredients.slice());
   }
 }

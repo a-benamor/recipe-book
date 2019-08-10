@@ -23,7 +23,9 @@
             [routerLink]="['edit']">
             Edit Recipe
           </a></li>
-          <li><a href="#">Delete Recipe</a></li>
+          <li><button type="button"
+                      class=" btn btn-link"
+                      (click)="onDeleteRecipe()">Delete Recipe</button></li>
         </ul>
       </div>
     </div>
