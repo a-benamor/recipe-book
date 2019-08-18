@@ -9,7 +9,7 @@ import {Subject} from 'rxjs';
 })
 export class RecipeService {
 
- private recipes: Recipe[] = [
+/* private recipes: Recipe[] = [
     new Recipe( 'Tasty Shnietzel', 'A supet tasty shnietzel, just awesome',
       'https://upload.wikimedia.org/wikipedia/commons/7/72/Schnitzel.JPG', [
         new Ingredient('Meat', 1),
@@ -21,7 +21,9 @@ export class RecipeService {
       new Ingredient('Buns', 1),
       new Ingredient('Meat', 1)
     ])
-  ];
+  ];*/
+
+  private recipes: Recipe[] = [] ;
 
   recipesChanged = new Subject< Recipe[] >();
 
@@ -52,5 +54,10 @@ export class RecipeService {
   removeRecipe(index: number) {
     this.recipes.splice(index, 1);
     this.recipesChanged.next(this.recipes.slice());
+  }
+
+  updateRecipes(recipes: Recipe[] ) {
+    this.recipes = recipes ;
+    this.recipesChanged.next(this.recipes.slice()) ;
   }
 }
