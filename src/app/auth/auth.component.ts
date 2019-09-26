@@ -53,4 +53,8 @@ export class AuthComponent implements OnInit {
 
   }
 
+  onCloseModal() {
+    this.error = null;
+  }
+
 }
