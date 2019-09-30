@@ -12,6 +12,7 @@ export class RecipeItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('recipeItem component on init');
   }
 
 }
