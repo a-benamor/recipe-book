@@ -9,8 +9,6 @@ export class RecipeSelectComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-    console.log('RecipesSelect component on init');
-  }
+  ngOnInit() {}
 
 }
