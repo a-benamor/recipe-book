@@ -3,9 +3,6 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
 import {AbstractControl, FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {RecipeService} from '../recipe.service';
 import {Recipe} from '../recipe.model';
-import {Ingredient} from '../../shared/ingredient.model';
-import {forEach} from '@angular/router/src/utils/collection';
-import {of} from 'rxjs';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -17,7 +14,7 @@ export class RecipeEditComponent implements OnInit {
   editMode = false ;
   id: number;
   recipeForm: FormGroup;
-  @ViewChild('imageContent') imageContentForEdit;
+  @ViewChild('imageContent', { static: false }) imageContentForEdit;
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,

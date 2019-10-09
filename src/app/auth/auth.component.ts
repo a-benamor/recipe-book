@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
 })
 export class AuthComponent implements OnInit {
 
-  @ViewChild('authForm') authForm: NgForm;
+  @ViewChild('authForm', { static: false }) authForm: NgForm;
   isLoginMode = true;
   onLoading = false;
   error : string = null;
