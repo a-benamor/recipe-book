@@ -2,6 +2,7 @@ import {Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChil
 import {Ingredient} from '../../shared/ingredient.model';
 import {ShoppingListService} from '../shopping-list.service';
 import {NgForm, NgModel} from '@angular/forms';
+// @ts-ignore
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -34,12 +35,11 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
   onSubmit() {
     console.log(this.addIngredientForm);
+    const ingredientInput = new Ingredient(this.addIngredientForm.value.name, Number(this.addIngredientForm.value.amount));
     if (!this.editMode) {
-      this.shoppingListService.addIngredient(new Ingredient(this.addIngredientForm.value.name,
-        Number(this.addIngredientForm.value.amount)));
+      this.shoppingListService.addIngredient(ingredientInput);
     } else {
-      this.shoppingListService.updateIngredient(this.editItemIndex,
-        new Ingredient(this.addIngredientForm.value.name, Number(this.addIngredientForm.value.amount)));
+      this.shoppingListService.updateIngredient(this.editItemIndex, ingredientInput);
     }
     this.editMode = false;
     this.addIngredientForm.reset();
