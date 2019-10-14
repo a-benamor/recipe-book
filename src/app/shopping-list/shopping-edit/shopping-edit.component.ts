@@ -4,8 +4,8 @@ import {NgForm} from '@angular/forms';
 // @ts-ignore
 import {Subscription} from 'rxjs';
 import {Store} from '@ngrx/store';
-import * as fromShoppingListReducer from '../store/shopping-list.reducer';
 import * as ShoppingListActions from '../store/shopping-list.actions';
+import * as fromAppReducer from '../../store/app.reducer';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -19,7 +19,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   editMode = false;
   loadedIngredient: Ingredient;
 
-  constructor(private store: Store<fromShoppingListReducer.ApplicationStateType>) { }
+  constructor(private store: Store<fromAppReducer.ApplicationStateType>) { }
 
   ngOnInit() {
     this.itemSubscription = this.store.select('shoppingList').subscribe((stateData) => {

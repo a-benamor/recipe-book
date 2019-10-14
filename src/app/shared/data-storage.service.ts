@@ -12,7 +12,8 @@ import {UserModel} from '../auth/user.model';
 export class DataStorageService {
 
   private authenticatedUserInfo: UserModel;
-  constructor(private httpClient: HttpClient, private recipeService: RecipeService, private authService: AuthService) { }
+  constructor(private httpClient: HttpClient, private recipeService: RecipeService,
+              private authService: AuthService) { }
 
 
   storeRecipes() {
@@ -22,26 +23,6 @@ export class DataStorageService {
          console.log(response);
        }
      );
-  }
-  /* we have used this method to add the token to the request to fetch recipes. this method is depreciated once we have used
-   the interceptor to add this token */
-  getRecipesWithExhaustMap() {
-    return this.authService.user.pipe(take(1), exhaustMap(user => {
-      return this.httpClient.get< Recipe[] >('https://ng-recipe-app-5ee93.firebaseio.com/recipes.json', {
-        // params: new HttpParams().set('auth', user.token)
-      });
-    }), map(
-      (response: Recipe[]) => {
-        return response.map(
-          (recipe) => {
-            return {...recipe, ingredients: recipe.ingredients ? recipe.ingredients : []} ;
-          }
-        );
-      }), tap(
-      (response) => {
-        this.recipeService.updateRecipes(response) ;
-      }
-    ));
   }
 
   getRecipes() {

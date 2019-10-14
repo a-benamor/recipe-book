@@ -4,8 +4,8 @@ import {Ingredient} from '../shared/ingredient.model';
 // @ts-ignore
 import {Subject} from 'rxjs';
 import {Store} from '@ngrx/store';
-import * as fromShoppingListReducer from '../shopping-list/store/shopping-list.reducer';
 import {AddIngredientsAction} from '../shopping-list/store/shopping-list.actions';
+import * as fromAppReducer from '../store/app.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class RecipeService {
 
   recipesChanged = new Subject< Recipe[] >();
 
-  constructor(private store: Store<fromShoppingListReducer.ApplicationStateType>) { }
+  constructor(private store: Store<fromAppReducer.ApplicationStateType>) { }
 
   getRecipes() {
     return this.recipes.slice() ;
