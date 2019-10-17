@@ -1,22 +1,25 @@
 import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Recipe} from './recipe.model';
-import {Observable} from 'rxjs';
-import {DataStorageService} from '../shared/data-storage.service';
-import {RecipeService} from './recipe.service';
+import {Store} from '@ngrx/store';
+import * as fromAppReducer from '../store/app.reducer';
+import * as RecipesActions from './store/recipes.actions';
+import {Actions, ofType} from '@ngrx/effects';
+import {take} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeResolverService implements Resolve<Recipe[]> {
 
-  constructor(private dataStorageService: DataStorageService, private recipeService: RecipeService ) { }
+  constructor(private store: Store<fromAppReducer.ApplicationStateType>,
+              private actions$: Actions) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)  {
-    if ( this.recipeService.getRecipes().length === 0 ) {
-     return this.dataStorageService.getRecipes();
-    } else {
-      return this.recipeService.getRecipes();
-    }
+    this.store.dispatch(new RecipesActions.FetchRecipesAction());
+    return this.actions$.pipe(
+      ofType(RecipesActions.SET_RECIPES),
+      take(1),
+    );
   }
 }

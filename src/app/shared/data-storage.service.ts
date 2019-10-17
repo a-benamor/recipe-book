@@ -1,28 +1,28 @@
-import {Injectable, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {RecipeService} from '../recipes/recipe.service';
 import {Recipe} from '../recipes/recipe.model';
-import {exhaustMap, map, take, tap} from 'rxjs/operators';
-import {AuthService} from '../auth/auth.service';
-import {UserModel} from '../auth/user.model';
+import {map, tap} from 'rxjs/operators';
+import {Store} from '@ngrx/store';
+import * as fromAppReducer from '../store/app.reducer';
+import * as  fromRecipesReducer from '../recipes/store/recipes.reducer';
+import {SetRecipesAction} from '../recipes/store/recipes.actions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataStorageService {
 
-  private authenticatedUserInfo: UserModel;
   constructor(private httpClient: HttpClient, private recipeService: RecipeService,
-              private authService: AuthService) { }
+              private store: Store<fromAppReducer.ApplicationStateType>) { }
 
 
   storeRecipes() {
-    const recipes = this.recipeService.getRecipes();
-    this.httpClient.put('https://ng-recipe-app-5ee93.firebaseio.com/recipes.json', recipes).subscribe(
-       (response) => {
-         console.log(response);
-       }
-     );
+    let recipes: Recipe[];
+    this.store.select('recipes').subscribe((recipesState: fromRecipesReducer.RecipesStateType) => {
+      recipes = recipesState.recipes;
+    })
+    this.httpClient.put('https://ng-recipe-app-5ee93.firebaseio.com/recipes.json', recipes).subscribe();
   }
 
   getRecipes() {
@@ -37,7 +37,7 @@ export class DataStorageService {
           );
         }) , tap(
         (response) => {
-          this.recipeService.updateRecipes(response) ;
+          this.store.dispatch(new SetRecipesAction(response));
         }
         )
       );

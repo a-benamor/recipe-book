@@ -21,7 +21,8 @@ export class AuthEffects {
       email: user.email,
       id: user.id,
       token: user.token,
-      tokenExpirationDate: userExpireToken
+      tokenExpirationDate: userExpireToken,
+      redirect: true,
     });
   }
    handleError = (responseError: HttpErrorResponse) => {
@@ -99,7 +100,9 @@ export class AuthEffects {
     tap((action: AuthActions.AuthenticateSuccessAction | AuthActions.LogoutAction) => {
       switch ( action.type) {
         case AuthActions.AUTHENTICATE_SUCCESS: {
-          this.router.navigate(['/recipes']);
+          if (action.payload.redirect) {
+            this.router.navigate(['/recipes']);
+          }
           break;
         }
         case AuthActions.LOGOUT: {
@@ -142,6 +145,7 @@ export class AuthEffects {
           id: userLoaded.id,
           token: userLoaded.token,
           tokenExpirationDate: userLoaded.tokenExpirationDate,
+          redirect: false
         });
     }
       return {type: 'default'} ;
