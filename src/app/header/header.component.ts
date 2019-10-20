@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {DataStorageService} from '../shared/data-storage.service';
 import {AuthService} from '../auth/auth.service';
 import {UserModel} from '../auth/user.model';
 import {Subscription} from 'rxjs';
@@ -8,6 +7,8 @@ import * as fromAppReducer from '../store/app.reducer';
 import {map} from 'rxjs/operators';
 import * as AuthActions from '../auth/store/auth.actions';
 import * as RecipesActions from '../recipes/store/recipes.actions';
+import {Recipe} from '../recipes/recipe.model';
+import * as fromRecipesReducer from '../recipes/store/recipes.reducer';
 
 @Component({
   selector : 'app-header',
@@ -18,7 +19,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private userSubscription: Subscription;
   private _isAuthenticated = false;
   private userSignedInfo: UserModel;
-  constructor( private dataStorageService: DataStorageService, private authService: AuthService,
+  constructor( private authService: AuthService,
                private store: Store<fromAppReducer.ApplicationStateType>) {}
 
   ngOnInit(): void {
@@ -32,12 +33,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onStoreRecipes() {
-    this.dataStorageService.storeRecipes();
+    let recipes: Recipe[];
+    this.store.select('recipes').subscribe((recipesState: fromRecipesReducer.RecipesStateType) => {
+      recipes = recipesState.recipes;
+    });
+    this.store.dispatch(new RecipesActions.StoreRecipesAction());
+
   }
 
   onFetchRecipes() {
     this.store.dispatch(new RecipesActions.FetchRecipesAction());
-    // this.dataStorageService.getRecipes().subscribe() ;
   }
 
   onLogout() {

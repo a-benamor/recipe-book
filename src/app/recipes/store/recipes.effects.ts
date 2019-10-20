@@ -1,10 +1,11 @@
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Injectable} from '@angular/core';
 import * as RecipesActions from './recipes.actions';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {map, switchMap, withLatestFrom} from 'rxjs/operators';
 import {Recipe} from '../recipe.model';
-import {SetRecipesAction} from './recipes.actions';
 import {HttpClient} from '@angular/common/http';
+import {Store} from '@ngrx/store';
+import * as fromAppReducer from '../../store/app.reducer';
 
 @Injectable()
 export class RecipesEffects {
@@ -22,9 +23,19 @@ export class RecipesEffects {
       );
     }),
     map((recipes: Recipe[]) => {
-      return new SetRecipesAction(recipes);
+      return new RecipesActions.SetRecipesAction(recipes);
     }),
   );
 
-  constructor(private actions$: Actions, private httpClient: HttpClient) {}
+  @Effect({dispatch: false})
+  storeRecipes = this.actions$.pipe(
+    ofType(RecipesActions.STORE_RECIPES),
+    withLatestFrom(this.store.select('recipes')),
+    switchMap(([storeActionData, recipesState]) => {
+      return this.httpClient.put('https://ng-recipe-app-5ee93.firebaseio.com/recipes.json', recipesState.recipes);
+    })
+  );
+
+  constructor(private actions$: Actions, private httpClient: HttpClient,
+              private store: Store<fromAppReducer.ApplicationStateType>) {}
 }

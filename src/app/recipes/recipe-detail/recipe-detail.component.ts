@@ -1,13 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Params, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import {Recipe} from '../recipe.model';
-import {RecipeService} from '../recipe.service';
 import {Store} from '@ngrx/store';
 import * as fromAppReducer from '../../store/app.reducer';
 import {Subscription} from 'rxjs';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import * as fromRecipesReducer from '../store/recipes.reducer';
+import * as RecipesActions from '../store/recipes.actions';
+import * as ShoppingListActions from '../../shopping-list/store/shopping-list.actions';
 
 
 @Component({
@@ -21,8 +22,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   recipeId: number;
   recipesSubscription: Subscription;
 
-  constructor(private recipeService: RecipeService,
-              private router: Router,
+  constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
               private store: Store<fromAppReducer.ApplicationStateType>) {
   }
@@ -42,17 +42,19 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
         });
       }),
     ).subscribe(recipe => {
+      console.log(recipe);
       this.recipeDetail = recipe;
     });
   }
 
   onClickToShoppingList() {
-    this.recipeService.addIngredientToShoppingList(this.recipeDetail.ingredients);
+    this.store.dispatch(new ShoppingListActions.AddIngredientsAction(this.recipeDetail.ingredients));
     this.router.navigate(['/shopping-list']);
   }
 
   onDeleteRecipe() {
-    this.recipeService.removeRecipe(this.recipeId);
+    // this.recipeService.removeRecipe(this.recipeId);
+    this.store.dispatch(new RecipesActions.DeleteRecipeAction(this.recipeId));
     this.router.navigate(['/recipes']);
   }
 

@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Recipe} from '../recipe.model';
-import {RecipeService} from '../recipe.service';
 import {Subscription} from 'rxjs';
 import {Store} from '@ngrx/store';
 import * as fromAppReducer from '../../store/app.reducer';
