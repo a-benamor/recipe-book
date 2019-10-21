@@ -11,7 +11,6 @@ import * as fromAppReducer from '../../store/app.reducer';
 })
 export class RecipeListComponent implements OnInit, OnDestroy {
   recipes: Recipe[] = []
-  subscription: Subscription;
   recipeStateSubscription: Subscription;
 
   constructor(private store: Store<fromAppReducer.ApplicationStateType>) { }
@@ -22,7 +21,8 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-    this.recipeStateSubscription.unsubscribe();
+    if (this.recipeStateSubscription) {
+      this.recipeStateSubscription.unsubscribe();
+    }
   }
 }

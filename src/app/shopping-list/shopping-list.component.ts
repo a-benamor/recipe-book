@@ -14,8 +14,6 @@ import * as fromAppReducer from '../store/app.reducer';
 export class ShoppingListComponent implements OnInit, OnDestroy {
 
   ingredients: Observable<{ingredients: Ingredient[]}> ;
-  ingredientChangeSubject: Subscription;
-
 
   constructor(private store: Store<fromAppReducer.ApplicationStateType>) {
   }
@@ -25,7 +23,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.ingredientChangeSubject.unsubscribe();
   }
 
   onEditItem(index: number) {
