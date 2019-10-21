@@ -1,21 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Recipe} from '../recipe.model';
+import {RecipeService} from '../recipe.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-recipe-list',
   templateUrl: './recipe-list.component.html',
   styleUrls: ['./recipe-list.component.css']
 })
-export class RecipeListComponent implements OnInit {
-  recipes: Recipe[] = [
-    new Recipe('A Recipe test', 'This is only a test',
-      'https://en.wikipedia.org/wiki/Spaghetti_with_meatballs#/media/File:Spaghetti_and_meatballs_1.jpg'),
-    new Recipe('second element', 'second element description', '')
-  ];
+export class RecipeListComponent implements OnInit, OnDestroy {
+  recipes: Recipe[] = []
+  subscription : Subscription;
 
-  constructor() { }
+  constructor( private recipeService: RecipeService) { }
 
   ngOnInit() {
+    this.recipes = this.recipeService.getRecipes();
+   this.subscription = this.recipeService.recipesChanged.subscribe(
+      (recipesData: Recipe[]) => {
+        this.recipes = recipesData;
+      }
+    );
   }
-
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }

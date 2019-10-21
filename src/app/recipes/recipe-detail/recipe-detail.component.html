@@ -1,36 +1,48 @@
-<div class="row">
-  <div class="col-xs-12">
-    <img src="" alt="" class="img-responsive">
+<div>
+  <div class="row">
+    <div class="col-xs-12">
+      <img [src]="recipeDetail.imagePath" alt="{{recipeDetail.name}}" class="img-responsive" width="500px">
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-    <h1>Recipe Name</h1>
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>{{recipeDetail.name}}</h1>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-    <div class="btn-group">
-      <button type="button"
-              class="btn btn-primary dropdown-toggle">
-              Manage Recipe
-             <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li><a href="#">To shopping list</a></li>
-        <li><a href="#">Edit Recipe</a></li>
-        <li><a href="#">Delete Recipe</a></li>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="btn-group" appDropdown>
+        <button type="button"
+                class="btn btn-primary dropdown-toggle">
+          Manage Recipe
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu " >
+          <li><a (click)="onClickToShoppingList()">To shopping list</a></li>
+          <li><a
+            [routerLink]="['edit']">
+            Edit Recipe
+          </a></li>
+          <li><button type="button"
+                      class=" btn btn-link"
+                      (click)="onDeleteRecipe()">Delete Recipe</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      {{recipeDetail.description}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let ingredient of recipeDetail?.ingredients">
+          {{ ingredient.name }}( {{ ingredient.amount }} )
+        </li>
       </ul>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-    Description
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-    Ingredients
-  </div>
+
 </div>
