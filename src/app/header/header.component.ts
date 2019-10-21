@@ -1,8 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {DataStorageService} from '../shared/data-storage.service';
 import {AuthService} from '../auth/auth.service';
 import {UserModel} from '../auth/user.model';
 import {Subscription} from 'rxjs';
+import {Store} from '@ngrx/store';
+import * as fromAppReducer from '../store/app.reducer';
+import {map} from 'rxjs/operators';
+import * as AuthActions from '../auth/store/auth.actions';
+import * as RecipesActions from '../recipes/store/recipes.actions';
+import {Recipe} from '../recipes/recipe.model';
+import * as fromRecipesReducer from '../recipes/store/recipes.reducer';
 
 @Component({
   selector : 'app-header',
@@ -13,24 +19,34 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private userSubscription: Subscription;
   private _isAuthenticated = false;
   private userSignedInfo: UserModel;
-  constructor( private dataStorageService: DataStorageService, private authService: AuthService) {}
+  constructor( private authService: AuthService,
+               private store: Store<fromAppReducer.ApplicationStateType>) {}
 
   ngOnInit(): void {
-   this.userSubscription = this.authService.user.subscribe((user: UserModel) => {
-      this._isAuthenticated = (user) ? true : false ;
-    });
+   this.userSubscription = this.store.select('auth').pipe(
+     map(authState => {
+       return authState.user;
+     })).subscribe(
+     (user: UserModel) => {
+       this._isAuthenticated = (user) ? true : false ;
+     });
   }
 
   onStoreRecipes() {
-    this.dataStorageService.storeRecipes();
+    let recipes: Recipe[];
+    this.store.select('recipes').subscribe((recipesState: fromRecipesReducer.RecipesStateType) => {
+      recipes = recipesState.recipes;
+    });
+    this.store.dispatch(new RecipesActions.StoreRecipesAction());
+
   }
 
   onFetchRecipes() {
-    this.dataStorageService.getRecipes().subscribe() ;
+    this.store.dispatch(new RecipesActions.FetchRecipesAction());
   }
 
   onLogout() {
-    this.authService.logout();
+    this.store.dispatch(new AuthActions.LogoutAction());
   }
 
   get isAuthenticated() {
