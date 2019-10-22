@@ -30,6 +30,8 @@ const DIST_FOLDER = join(process.cwd(), 'dist/browser');
 const {AppServerModuleNgFactory, LAZY_MODULE_MAP, ngExpressEngine, provideModuleMap} = require('./dist/server/main');
 
 // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
+// create the engine using express to serve or host the Angular applciation entry page in the server side
+// we have defined the html page
 app.engine('html', ngExpressEngine({
   bootstrap: AppServerModuleNgFactory,
   providers: [
@@ -37,6 +39,7 @@ app.engine('html', ngExpressEngine({
   ]
 }));
 
+// set the viw engine to host the configured html web page.
 app.set('view engine', 'html');
 app.set('views', DIST_FOLDER);
 
