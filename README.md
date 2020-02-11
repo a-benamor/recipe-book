@@ -8,7 +8,7 @@ The recipe book application offers many services as:
 - Display the recipe list stored in the database (Firebase).  
 - Display the detail information of the selected recipe.  
 - Add the chosen ingredient to the shopping list.  
-- Modify of delete ingredient from the shopping list.  
+- Modify or delete ingredient from the shopping list.  
 - The user can sign up or sign in to the application.  
 
 PS: The user must be authenticated in order to use the recipe book functionalities. 
@@ -21,7 +21,7 @@ In order to run the application in your local machine, you have to:
 2. Create a Fire base project. 
 3. Create a Realtime data base for the project.
 4. Configure email address / password for authentication mechanism:  
-   * Activate only the first option which allow new users to subscribe with their email address and their password)
+   * Activate only the first option which allow new users to subscribe with their email address and their password.
 5. Install the project: 
    * git clone https://github.com/abenamor9/recipe-book.git  
 6. Navigate to the project and install dependencies:   
@@ -40,7 +40,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Fire base Host server
+## Fire base Hosting
 Steps to do in order to host the project at Fire base host (a static host):  
 1. ng build --prod
 2. npm install -g firebase-tools
