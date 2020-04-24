@@ -50,4 +50,4 @@ Steps to do in order to host the project at Fire base host (a static host):
 
 ## YouTube video
 Here is a descriptive video in which I demonstrate a full user story:
-[Recipe book](https://www.youtube.com/watch?v=OpYCF2Ysvts&t=4s)
+[Recipe book](https://youtu.be/sZd5GipvDb0)
